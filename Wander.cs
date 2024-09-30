@@ -17,9 +17,9 @@ public class Wander : MonoBehaviour
     void Update()
     {
         // Get orientation of character as a vector
-        // Orientation is an angle from +Y axis
-        float vX = -Mathf.Sin(character.orientation * Mathf.Deg2Rad);
-        float vY = Mathf.Cos(character.orientation * Mathf.Deg2Rad);
+        // Orientation is an angle from +X axis
+        float vX = Mathf.Cos(character.orientation * Mathf.Deg2Rad);
+        float vY = Mathf.Sin(character.orientation * Mathf.Deg2Rad);
 
         // Get velocity from teh vector form of the orientation
         character.velocity = new Vector3(vX, vY, 0) * maxSpeed;

@@ -51,7 +51,7 @@ public class Kinematic : MonoBehaviour
 	{
 		if (velocity.magnitude > 0)
 		{
-			orientation = Mathf.Atan2(-velocity.x, velocity.y) * Mathf.Rad2Deg;
+			orientation = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
 		}
 	}
 }
