@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Wander : MonoBehaviour
+{
+    private Kinematic character;
+    public float maxSpeed = 1.0f;
+    public float maxRotation = 360.0f;
+    // Start is called before the first frame update
+    void Start()
+    {
+        character = GetComponent<Kinematic>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Get orientation of character as a vector
+        // Orientation is an angle from +Y axis
+        float vX = -Mathf.Sin(character.orientation * Mathf.Deg2Rad);
+        float vY = Mathf.Cos(character.orientation * Mathf.Deg2Rad);
+
+        // Get velocity from teh vector form of the orientation
+        character.velocity = new Vector3(vX, vY, 0) * maxSpeed;
+
+        // Change our orientation randomly       
+        character.rotation = Random.Range(-maxRotation, maxRotation);
+    }
+}
