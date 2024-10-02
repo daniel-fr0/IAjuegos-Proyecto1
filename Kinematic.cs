@@ -11,6 +11,7 @@ public class Kinematic : MonoBehaviour
 	public Vector3 velocity;
 	public float rotation;
 	public float speed; // Debugging purposes only
+	public bool showInfo = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,20 @@ public class Kinematic : MonoBehaviour
 
 		// Record speed (For Debugging)
 		speed = velocity.magnitude;
+
+		// Toggle info with F key OR triangle button
+		if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.JoystickButton3))
+		{
+			showInfo = !showInfo;
+		}
+
+		// Show info (For Debugging)
+		if (showInfo)
+		{
+			// Trace the object's velocity
+			Debug.DrawRay(position, velocity, Color.yellow);
+		}
+
     }
 
 	public void ApplySteering(SteeringOutput steering, float maxSpeed)
