@@ -7,6 +7,7 @@ public class KinematicController : MonoBehaviour
 {
     private Kinematic character;
     public float maxSpeed = 10.0f;
+    public GameObject toggleObject;
 
     // Start is called before the first frame update
     void Start()
@@ -27,5 +28,23 @@ public class KinematicController : MonoBehaviour
 
         character.velocity = input * maxSpeed;
         character.NewOrientation();
+
+        // Double the speed when pressing left shift or R2
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton7))
+        {
+            character.velocity *= 2;
+        }
+
+        // Toggle on or off game object 1 with Tab key or select button
+        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.JoystickButton13))
+        {
+            toggleObject.SetActive(!toggleObject.activeSelf);
+        }
+
+        // Esc or start button to toggle pause
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton9))
+        {
+            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+        }
     }
 }
