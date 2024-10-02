@@ -10,7 +10,7 @@ public class Arrive : MonoBehaviour
     public float maxAcceleration = 20.0f;
     public float maxSpeed = 5.0f;
     public float targetRadius = 0.25f;
-    public float slowRadius = 2.0f;
+    public float slowRadius = 3.0f;
     public float timeToTarget = 0.1f;
     // Start is called before the first frame update
     void Start()
@@ -32,7 +32,6 @@ public class Arrive : MonoBehaviour
         {
             return;
         }
-        distance -= targetRadius;
 
         // If we are outside the slowRadius, then go max speed
         float targetSpeed;
@@ -42,7 +41,7 @@ public class Arrive : MonoBehaviour
         }
         else
         {
-            targetSpeed = maxSpeed * distance / slowRadius;
+            targetSpeed = maxSpeed * (distance - targetRadius) / (slowRadius - targetRadius);
         }
 
         // The target velocity combines speed and direction
