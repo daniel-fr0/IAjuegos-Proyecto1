@@ -7,7 +7,7 @@ public class KinematicSeek : MonoBehaviour
     private Kinematic character;
     public Kinematic target;
     public float maxSpeed = 5.0f;
-    public float fleeRadius = 5.0f;
+    public float fleeRadius = 2.0f;
     public bool flee = false;
     // Start is called before the first frame update
     void Start()
