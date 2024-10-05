@@ -7,11 +7,11 @@ public class Align : MonoBehaviour
     private Kinematic character;
     public Kinematic target;
     public float maxAngularAcceleration = 1440.0f;
-    public float maxRotation = 720.0f;
+    public float maxRotation = 360.0f;
     // The radius for arriving at the target
     public float targetRadius = 0.5f;
     // The radius for beginning to slow down
-    public float slowRadius = 150.0f;
+    public float slowRadius = 90.0f;
     // The time over which to achieve target speed
     public float timeToTarget = 0.1f;
     // Start is called before the first frame update
@@ -23,6 +23,13 @@ public class Align : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Draw radiuses for debugging
+        if (character.debugInfo)
+        {
+            character.DrawArc(character.position, character.rotationDebugRadius-0.1f, Color.magenta, character.orientation-slowRadius, character.orientation+slowRadius);
+            character.DrawArc(character.position, character.rotationDebugRadius-0.2f, Color.cyan, character.orientation-targetRadius, character.orientation+targetRadius);
+        }
+
         SteeringOutput steering = new SteeringOutput();
 
         // Get the naive direction to the target
