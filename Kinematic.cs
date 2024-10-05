@@ -12,6 +12,7 @@ public class Kinematic : MonoBehaviour
 	public float rotation;
 	public float speed; // Debugging purposes only
 	public bool debugInfo = false;
+	public float rotationDebugRadius = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +47,8 @@ public class Kinematic : MonoBehaviour
 		{
 			// Trace the object's velocity
 			Debug.DrawRay(position, velocity, Color.yellow);
+			// Trace the object's rotation
+			DrawRotation(Color.green, Color.red);
 		}
 
     }
@@ -88,6 +91,26 @@ public class Kinematic : MonoBehaviour
 				Vector3 end = center + new Vector3(Mathf.Cos(angleEnd), Mathf.Sin(angleEnd), 0) * radius;
 				Debug.DrawLine(start, end, color);
 			}
+		}
+	}
+
+	private void DrawRotation(Color positive, Color negative, float step = 10)
+	{
+		float signedStep = Mathf.Sign(rotation) * step;
+		float steps = Mathf.Floor(Mathf.Abs(rotation)/step);
+
+		// Trace the rotation in steps of 'step' degrees
+		for (int i = 0; i < steps; i++)
+		{
+			float angleStart = (orientation + i * signedStep) * Mathf.Deg2Rad;
+			float angleEnd = angleStart + signedStep * Mathf.Deg2Rad;
+			Vector3 start = position + new Vector3(Mathf.Cos(angleStart), Mathf.Sin(angleStart), 0) * rotationDebugRadius;
+			Vector3 end = position + new Vector3(Mathf.Cos(angleEnd), Mathf.Sin(angleEnd), 0) * rotationDebugRadius;
+
+			if (rotation > 0)
+				Debug.DrawLine(start, end, positive);
+			else
+				Debug.DrawLine(start, end, negative);
 		}
 	}
 
