@@ -35,6 +35,9 @@ public class Seek : MonoBehaviour
 		}
 		else
 		{
+			// Draw the flee radius for debugging
+			character.drawRadius(character.position, fleeRadius, Color.red);
+			
 			steering.linear = character.position - target.position;
 			// If we are fleeing, we want to stop eventually
 			if (steering.linear.magnitude > fleeRadius)

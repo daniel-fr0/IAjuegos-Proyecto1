@@ -21,6 +21,10 @@ public class Arrive : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Draw the target+slow radius for debugging
+        character.drawRadius(target.position, targetRadius, Color.cyan);
+        character.drawRadius(target.position, slowRadius, Color.magenta);
+
         SteeringOutput steering = new SteeringOutput();
 
         // Get the direction to the target
