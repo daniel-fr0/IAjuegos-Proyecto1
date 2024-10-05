@@ -18,6 +18,9 @@ public class KinematicArrive : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Draw the target radius for debugging
+        character.drawRadius(target.position, targetRadius, Color.cyan);
+
         // Get the direction to the target
         character.velocity = target.position - character.position;
 

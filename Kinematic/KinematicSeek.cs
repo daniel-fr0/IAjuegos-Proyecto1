@@ -21,6 +21,9 @@ public class KinematicSeek : MonoBehaviour
         // Get the direction to the target
         if (flee)
         {
+            // Draw the flee radius for debugging
+            character.drawRadius(character.position, fleeRadius, Color.red);
+
             character.velocity = character.position - target.position;
             if (character.velocity.magnitude > fleeRadius)
             {
