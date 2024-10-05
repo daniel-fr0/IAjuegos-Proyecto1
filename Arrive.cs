@@ -22,8 +22,8 @@ public class Arrive : MonoBehaviour
     void Update()
     {
         // Draw the target+slow radius for debugging
-        character.drawRadius(target.position, targetRadius, Color.cyan);
-        character.drawRadius(target.position, slowRadius, Color.magenta);
+        character.DrawRadius(target.position, targetRadius, Color.cyan);
+        character.DrawRadius(target.position, slowRadius, Color.magenta);
 
         SteeringOutput steering = new SteeringOutput();
 

@@ -19,7 +19,7 @@ public class KinematicArrive : MonoBehaviour
     void Update()
     {
         // Draw the target radius for debugging
-        character.drawRadius(target.position, targetRadius, Color.cyan);
+        character.DrawRadius(target.position, targetRadius, Color.cyan);
 
         // Get the direction to the target
         character.velocity = target.position - character.position;

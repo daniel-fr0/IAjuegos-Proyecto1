@@ -11,7 +11,7 @@ public class Kinematic : MonoBehaviour
 	public Vector3 velocity;
 	public float rotation;
 	public float speed; // Debugging purposes only
-	public bool showInfo = false;
+	public bool debugInfo = false;
 
     // Start is called before the first frame update
     void Start()
@@ -38,11 +38,11 @@ public class Kinematic : MonoBehaviour
 		// Toggle info with F key OR triangle button
 		if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.JoystickButton3))
 		{
-			showInfo = !showInfo;
+			debugInfo = !debugInfo;
 		}
 
 		// Show info (For Debugging)
-		if (showInfo)
+		if (debugInfo)
 		{
 			// Trace the object's velocity
 			Debug.DrawRay(position, velocity, Color.yellow);
@@ -70,9 +70,9 @@ public class Kinematic : MonoBehaviour
 		}
 	}
 
-	public void drawRadius(Vector3 center, float radius, Color color, float step = 10)
+	public void DrawRadius(Vector3 center, float radius, Color color, float step = 10)
 	{
-		if (showInfo)
+		if (debugInfo)
 		{
 			// Trace the radius in steps of 'step' degrees
 			for (int i = 0; i < 360/step; i++)
@@ -84,5 +84,10 @@ public class Kinematic : MonoBehaviour
 				Debug.DrawLine(start, end, color);
 			}
 		}
+	}
+
+	public static float MapToRange(float angle)
+	{
+		return (angle + 180) % 360 - 180;
 	}
 }
