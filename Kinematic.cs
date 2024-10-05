@@ -78,39 +78,41 @@ public class Kinematic : MonoBehaviour
 		}
 	}
 
+	private void DrawRotation(Color positive, Color negative, float step = 10)
+	{
+		if (rotation > 0)
+		{
+			DrawArc(position, rotationDebugRadius, positive, orientation, orientation+rotation, step);
+		}
+		else if (rotation < 0)
+		{
+			DrawArc(position, rotationDebugRadius, negative, orientation+rotation, orientation, step);
+		}
+	}
+
 	public void DrawRadius(Vector3 center, float radius, Color color, float step = 10)
 	{
 		if (debugInfo)
 		{
 			// Trace the radius in steps of 'step' degrees
-			for (int i = 0; i < 360/step; i++)
+			DrawArc(center, radius, color, 0, 360, step);
+		}
+	}
+
+	public void DrawArc(Vector3 center, float radius, Color color, float fromAngle = 0, float toAngle = 360, float step = 10)
+	{
+		if (debugInfo)
+		{
+			// Trace the arc in steps of 'step' degrees
+			int steps = (int)((toAngle - fromAngle) / step);
+			for (int i = 0; i < steps; i ++)
 			{
-				float angleStart = i * step * Mathf.Deg2Rad;
-				float angleEnd = (i + 1) * step * Mathf.Deg2Rad;
+				float angleStart = (fromAngle + i * step) * Mathf.Deg2Rad;
+				float angleEnd = angleStart + step * Mathf.Deg2Rad;
 				Vector3 start = center + new Vector3(Mathf.Cos(angleStart), Mathf.Sin(angleStart), 0) * radius;
 				Vector3 end = center + new Vector3(Mathf.Cos(angleEnd), Mathf.Sin(angleEnd), 0) * radius;
 				Debug.DrawLine(start, end, color);
 			}
-		}
-	}
-
-	private void DrawRotation(Color positive, Color negative, float step = 10)
-	{
-		float signedStep = Mathf.Sign(rotation) * step;
-		float steps = Mathf.Floor(Mathf.Abs(rotation)/step);
-
-		// Trace the rotation in steps of 'step' degrees
-		for (int i = 0; i < steps; i++)
-		{
-			float angleStart = (orientation + i * signedStep) * Mathf.Deg2Rad;
-			float angleEnd = angleStart + signedStep * Mathf.Deg2Rad;
-			Vector3 start = position + new Vector3(Mathf.Cos(angleStart), Mathf.Sin(angleStart), 0) * rotationDebugRadius;
-			Vector3 end = position + new Vector3(Mathf.Cos(angleEnd), Mathf.Sin(angleEnd), 0) * rotationDebugRadius;
-
-			if (rotation > 0)
-				Debug.DrawLine(start, end, positive);
-			else
-				Debug.DrawLine(start, end, negative);
 		}
 	}
 
