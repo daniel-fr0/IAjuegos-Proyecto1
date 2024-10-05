@@ -5,17 +5,19 @@ using UnityEngine;
 public class Arrive : MonoBehaviour
 {
     // Parameters for Arrive behavior
-    private Kinematic character;
+    protected Kinematic character;
     public Kinematic target;
     public float maxAcceleration = 20.0f;
     public float maxSpeed = 5.0f;
     public float targetRadius = 0.25f;
     public float slowRadius = 3.0f;
     public float timeToTarget = 0.1f;
+    protected SteeringOutput steering;
     // Start is called before the first frame update
     void Start()
     {
         character = GetComponent<Kinematic>();
+        steering = new SteeringOutput();
     }
 
     // Update is called once per frame
@@ -24,8 +26,6 @@ public class Arrive : MonoBehaviour
         // Draw the target+slow radius for debugging
         character.DrawRadius(target.position, targetRadius, Color.cyan);
         character.DrawRadius(target.position, slowRadius, Color.magenta);
-
-        SteeringOutput steering = new SteeringOutput();
 
         // Get the direction to the target
         Vector3 direction = target.position - character.position;

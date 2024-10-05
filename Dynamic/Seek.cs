@@ -5,7 +5,7 @@ using UnityEngine;
 public class Seek : MonoBehaviour
 {
 	// Parameters for Seek behavior
-	private Kinematic character;
+	protected Kinematic character;
 	public Kinematic target;
 	public float maxAcceleration = 20.0f;
 	public float maxSpeed = 5.0f;
@@ -13,7 +13,7 @@ public class Seek : MonoBehaviour
 	public float timeToStop = 0.5f;
 	public bool flee = false;
 
-	private SteeringOutput steering;
+	protected SteeringOutput steering;
 
 	// Start is called before the first frame update
 	void Start()

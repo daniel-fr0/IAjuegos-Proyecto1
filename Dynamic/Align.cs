@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Align : MonoBehaviour
 {
-    private Kinematic character;
+    protected Kinematic character;
     public Kinematic target;
     public float maxAngularAcceleration = 1440.0f;
     public float maxRotation = 360.0f;
@@ -14,10 +14,12 @@ public class Align : MonoBehaviour
     public float slowRadius = 90.0f;
     // The time over which to achieve target speed
     public float timeToTarget = 0.1f;
+    protected SteeringOutput steering;
     // Start is called before the first frame update
     void Start()
     {
         character = GetComponent<Kinematic>();
+        steering = new SteeringOutput();
     }
 
     // Update is called once per frame
@@ -29,8 +31,6 @@ public class Align : MonoBehaviour
             character.DrawArc(character.position, character.rotationDebugRadius-0.1f, Color.magenta, character.orientation-slowRadius, character.orientation+slowRadius);
             character.DrawArc(character.position, character.rotationDebugRadius-0.2f, Color.cyan, character.orientation-targetRadius, character.orientation+targetRadius);
         }
-
-        SteeringOutput steering = new SteeringOutput();
 
         // Get the naive direction to the target
         float rotation = target.orientation - character.orientation;
