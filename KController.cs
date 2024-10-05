@@ -65,10 +65,15 @@ public class KinematicController : MonoBehaviour
                 {
                     kinSeek.flee = !kinSeek.flee;
                 }
-                else
+                else if (seeker.GetComponent<Seek>() != null)
                 {
                     Seek seek = seeker.GetComponent<Seek>();
                     seek.flee = !seek.flee;
+                }
+                else
+                {
+                    Arrive arrive = seeker.GetComponent<Arrive>();
+                    arrive.flee = !arrive.flee;
                 }
             }
         }
