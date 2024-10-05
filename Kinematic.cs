@@ -69,4 +69,20 @@ public class Kinematic : MonoBehaviour
 			orientation = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
 		}
 	}
+
+	public void drawRadius(Vector3 center, float radius, Color color, float step = 10)
+	{
+		if (showInfo)
+		{
+			// Trace the radius in steps of 'step' degrees
+			for (int i = 0; i < 360/step; i++)
+			{
+				float angleStart = i * step * Mathf.Deg2Rad;
+				float angleEnd = (i + 1) * step * Mathf.Deg2Rad;
+				Vector3 start = center + new Vector3(Mathf.Cos(angleStart), Mathf.Sin(angleStart), 0) * radius;
+				Vector3 end = center + new Vector3(Mathf.Cos(angleEnd), Mathf.Sin(angleEnd), 0) * radius;
+				Debug.DrawLine(start, end, color);
+			}
+		}
+	}
 }
