@@ -6,7 +6,7 @@ using UnityEngine;
 public class KinematicController : MonoBehaviour
 {
     private Kinematic character;
-    public float maxSpeed = 10.0f;
+    public float maxSpeed = 5.0f;
     public GameObject toggleObject;
 
     // Start is called before the first frame update
