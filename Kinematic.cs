@@ -50,7 +50,7 @@ public class Kinematic : MonoBehaviour
 
     }
 
-	public void ApplySteering(SteeringOutput steering, float maxSpeed)
+	public void ApplySteering(SteeringOutput steering, float maxSpeed = float.MaxValue, float maxRotation = float.MaxValue)
 	{
 		velocity += steering.linear * Time.deltaTime;
 		rotation += steering.angular * Time.deltaTime;
@@ -59,6 +59,11 @@ public class Kinematic : MonoBehaviour
 		{
 			velocity.Normalize();
 			velocity *= maxSpeed;
+		}
+
+		if (Mathf.Abs(rotation) > maxRotation)
+		{
+			rotation = Mathf.Sign(rotation) * maxRotation;
 		}
 	}
 
@@ -86,8 +91,18 @@ public class Kinematic : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Maps an angle to the range [-180, 180]
+	/// </summary>
+	/// <param name="angle">An angle in degrees not bound</param>
+	/// <returns>An angle in degrees between [-180, 180]</returns>
 	public static float MapToRange(float angle)
 	{
-		return (angle + 180) % 360 - 180;
+		// This needs to use real clock arithmetic
+		float res = angle + 180;
+
+		res = (res % 360 + 360) % 360; // This is the same as "res mod 360"
+
+		return res - 180;
 	}
 }
