@@ -37,10 +37,22 @@ public class Face : MonoBehaviour
         // 2. Delegate to align (Align component already attached to target)
         faceTarget.orientation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // If debugging, draw the direction of the target
+        // If debugging, draw the target (crosshair)
         if (character.debugInfo)
         {
-            Debug.DrawLine(character.position, direction.normalized * character.rotationDebugRadius, Color.cyan);
+            Debug.DrawLine(
+                character.position + direction.normalized * (character.rotationDebugRadius-0.1f),
+                character.position + direction.normalized * character.rotationDebugRadius,
+                Color.cyan
+            );
+
+            character.DrawArc(
+                character.position,
+                character.rotationDebugRadius - 0.05f,
+                Color.cyan,
+                faceTarget.orientation - 5,
+                faceTarget.orientation + 5
+            );
         }
     }
 }
