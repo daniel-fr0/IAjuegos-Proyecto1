@@ -7,14 +7,23 @@ public class KinematicController : MonoBehaviour
 {
     private Kinematic character;
     public float maxSpeed = 5.0f;
-    public GameObject[] toggles;
+    private int scene = 0;
     public GameObject[] scenes;
-    public GameObject[] seekers;
+    public GameObject[] toggleShow;
+    public Flee[] toggleFlee;
 
     // Start is called before the first frame update
     void Start()
     {
         character = GetComponent<Kinematic>();
+
+        // Set the first scene to active
+        scenes[scene].SetActive(true);
+        // Set the rest of the scenes to inactive
+        for (int i = 1; i < scenes.Length; i++)
+        {
+            scenes[i].SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -37,44 +46,37 @@ public class KinematicController : MonoBehaviour
             character.velocity *= 2;
         }
 
-        // Toggle on or off game object 1 with Tab key or select button
+        // Go to next scene with E key or R1
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton5))
+        {
+            scenes[scene].SetActive(false);
+            scene = (scene + 1) % scenes.Length;
+            scenes[scene].SetActive(true);
+        }
+
+        // Go to previous scene with Q key or L1
+        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.JoystickButton4))
+        {
+            scenes[scene].SetActive(false);
+            scene = (scene - 1 + scenes.Length) % scenes.Length;
+            scenes[scene].SetActive(true);
+        }
+
+        // Toggle on or off game objects with Tab key or select button
         if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.JoystickButton13))
         {
-            foreach (GameObject toggle in toggles)
+            foreach (GameObject toggle in toggleShow)
             {
                 toggle.SetActive(!toggle.activeSelf);
             }
         }
 
-        // Toggle scenes with Q key or L1
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.JoystickButton4))
-        {
-            foreach (GameObject scene in scenes)
-            {
-                scene.SetActive(!scene.activeSelf);
-            }
-        }
-
-        // Toggle seekers to flee with Space key or X
+        // Toggle game objects to flee with Space key or X
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
         {
-            foreach (GameObject seeker in seekers)
+            foreach (Flee entity in toggleFlee)
             {
-                KinematicSeek kinSeek = seeker.GetComponent<KinematicSeek>();
-                if (kinSeek != null)
-                {
-                    kinSeek.flee = !kinSeek.flee;
-                }
-                else if (seeker.GetComponent<Seek>() != null)
-                {
-                    Seek seek = seeker.GetComponent<Seek>();
-                    seek.flee = !seek.flee;
-                }
-                else
-                {
-                    Arrive arrive = seeker.GetComponent<Arrive>();
-                    arrive.flee = !arrive.flee;
-                }
+                entity.flee = !entity.flee;
             }
         }
 
