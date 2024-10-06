@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Seek : MonoBehaviour
+public class Seek : Flee
 {
 	// Parameters for Seek behavior
 	protected Kinematic character;
-	public Kinematic target;
 	public float maxAcceleration = 20.0f;
 	public float maxSpeed = 5.0f;
-	public float fleeRadius = 2.0f;
-	public float timeToStop = 0.5f;
-	public bool flee = false;
-
 	protected SteeringOutput steering;
 
 	// Start is called before the first frame update

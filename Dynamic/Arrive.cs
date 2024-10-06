@@ -2,22 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrive : MonoBehaviour
+public class Arrive : Flee
 {
     // Parameters for Arrive behavior
     protected Kinematic character;
-    public Kinematic target;
     public float maxAcceleration = 20.0f;
     public float maxSpeed = 5.0f;
     public float targetRadius = 0.25f;
     public float slowRadius = 3.0f;
     public float timeToTarget = 0.1f;
     protected SteeringOutput steering;
-
-    // Parameters for Flee behavior
-    public float fleeRadius = 2.0f;
-    public float timeToStop = 0.5f;
-    public bool flee = false;
     // Start is called before the first frame update
     void Start()
     {

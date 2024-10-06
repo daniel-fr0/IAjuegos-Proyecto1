@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KinematicSeek : MonoBehaviour
+public class KinematicSeek : Flee
 {
     private Kinematic character;
-    public Kinematic target;
     public float maxSpeed = 5.0f;
-    public float fleeRadius = 2.0f;
-    public bool flee = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +21,7 @@ public class KinematicSeek : MonoBehaviour
             // Draw the flee radius for debugging
             character.DrawRadius(character.position, fleeRadius, Color.red);
 
+            // Flee while inside the flee radius
             character.velocity = character.position - target.position;
             if (character.velocity.magnitude > fleeRadius)
             {
