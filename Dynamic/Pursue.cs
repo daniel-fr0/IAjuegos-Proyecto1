@@ -10,7 +10,7 @@ public class Pursue : MonoBehaviour
     // can be accessed with base.target
     public Kinematic target;
     public float targetDebugRadius = 0.25f; // Debugging radius for the target
-    public Flee seeker;
+    public Seeker seeker;
     private Kinematic pursueTarget;
     // Start is called before the first frame update
     void Start()

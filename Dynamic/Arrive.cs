@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrive : Flee
+public class Arrive : Seeker
 {
     // Parameters for Arrive behavior
     protected Kinematic character;

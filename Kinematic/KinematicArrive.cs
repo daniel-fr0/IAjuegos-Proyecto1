@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KinematicArrive : Flee
+public class KinematicArrive : Seeker
 {
     private Kinematic character;
     public float maxSpeed = 5.0f;

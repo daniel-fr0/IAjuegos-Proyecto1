@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Flee: MonoBehaviour
+public class Seeker: MonoBehaviour
 {
 	// A component that implements the Flee behavior
 	public Kinematic target;

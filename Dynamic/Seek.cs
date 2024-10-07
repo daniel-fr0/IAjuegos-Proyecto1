@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Seek : Flee
+public class Seek : Seeker
 {
 	// Parameters for Seek behavior
 	protected Kinematic character;

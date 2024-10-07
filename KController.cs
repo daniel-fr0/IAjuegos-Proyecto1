@@ -10,7 +10,7 @@ public class KinematicController : MonoBehaviour
     private int scene = 0;
     public GameObject[] scenes;
     public GameObject[] toggleShow;
-    public Flee[] toggleFlee;
+    public Seeker[] toggleFlee;
 
     // Start is called before the first frame update
     void Start()
@@ -74,7 +74,7 @@ public class KinematicController : MonoBehaviour
         // Toggle game objects to flee with Space key or X
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
         {
-            foreach (Flee entity in toggleFlee)
+            foreach (Seeker entity in toggleFlee)
             {
                 entity.flee = !entity.flee;
             }
