@@ -13,6 +13,7 @@ public class Kinematic : MonoBehaviour
 	public float speed; // Debugging purposes only
 	public bool debugInfo = false;
 	public float rotationDebugRadius = 0.5f;
+	public bool usingAligner = false;
 
     // Start is called before the first frame update
     void Start()
@@ -72,6 +73,9 @@ public class Kinematic : MonoBehaviour
 
 	public void NewOrientation()
 	{
+		// Do not update orientation if object is using an align behavior
+		if (usingAligner) return;
+
 		if (velocity.magnitude > 0)
 		{
 			orientation = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;

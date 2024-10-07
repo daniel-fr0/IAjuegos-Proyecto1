@@ -16,14 +16,15 @@ public class Align : MonoBehaviour
     public float timeToTarget = 0.1f;
     protected SteeringOutput steering;
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         character = GetComponent<Kinematic>();
         steering = new SteeringOutput();
+        character.usingAligner = true;
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         // Draw radiuses for debugging
         if (character.debugInfo)
