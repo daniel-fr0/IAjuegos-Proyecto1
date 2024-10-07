@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class KinematicController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
-    private Kinematic character;
-    public float maxSpeed = 5.0f;
     private int scene = 0;
     public GameObject[] scenes;
     public GameObject[] toggleShow;
@@ -15,8 +13,6 @@ public class KinematicController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        character = GetComponent<Kinematic>();
-
         // Set the first scene to active
         scenes[scene].SetActive(true);
         // Set the rest of the scenes to inactive
@@ -29,23 +25,6 @@ public class KinematicController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dX = Input.GetAxis("Horizontal");
-        float dY = Input.GetAxis("Vertical");
-        Vector3 input = new Vector3(dX, dY, 0);
-        if (input.magnitude > 1)
-        {
-            input.Normalize();
-        }
-
-        character.velocity = input * maxSpeed;
-        character.NewOrientation();
-
-        // Double the speed when pressing left shift or R2
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton7))
-        {
-            character.velocity *= 2;
-        }
-
         // Go to next scene with E key or R1
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton5))
         {
