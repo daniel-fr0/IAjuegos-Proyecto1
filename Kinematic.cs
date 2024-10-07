@@ -82,11 +82,6 @@ public class Kinematic : MonoBehaviour
 		}
 	}
 
-	public Vector3 GetOrientationAsVector()
-	{
-		return new Vector3(Mathf.Cos(orientation * Mathf.Deg2Rad), Mathf.Sin(orientation * Mathf.Deg2Rad), 0);
-	}
-
 	private void DrawRotation(Color positive, Color negative, float step = 10)
 	{
 		if (rotation > 0)
@@ -138,5 +133,16 @@ public class Kinematic : MonoBehaviour
 		res = (res % 360 + 360) % 360; // This is the same as "res mod 360"
 
 		return res - 180;
+	}
+
+	/// <summary>
+	/// Returns a vector with the orientation as angle.
+	/// The angle is in degrees from the x-axis.
+	/// </summary>
+	/// <param name="orientation">The orientation in degrees</param>
+	/// <returns>A vector with the orientation as angle</returns>
+	public static Vector3 OrientationAsVector(float orientation)
+	{
+		return new Vector3(Mathf.Cos(orientation * Mathf.Deg2Rad), Mathf.Sin(orientation * Mathf.Deg2Rad), 0);
 	}
 }

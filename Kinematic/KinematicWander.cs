@@ -18,7 +18,7 @@ public class KinematicWander : MonoBehaviour
     {
         // Get orientation of character as a vector
         // Orientation is an angle from +X axis
-        Vector3 orientation = character.GetOrientationAsVector();
+        Vector3 orientation = Kinematic.OrientationAsVector(character.orientation);
 
         // Get velocity from the vector form of the orientation
         character.velocity = orientation * maxSpeed;
