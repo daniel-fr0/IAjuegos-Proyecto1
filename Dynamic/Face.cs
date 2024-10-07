@@ -2,40 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Face : MonoBehaviour
+public class Face : Align
 {
-    private Kinematic character;
-    public Kinematic target;
-    public Align aligner;
-    private Kinematic faceTarget;
+    private Kinematic realTarget;
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
-        character = GetComponent<Kinematic>();
+        base.Start();
+        realTarget = target;
 
         // Create a target for the Align behavior
         GameObject targetObject = new GameObject("Face Target");
-        faceTarget = targetObject.AddComponent<Kinematic>();
-        aligner.target = faceTarget;
+        target = targetObject.AddComponent<Kinematic>();
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
         // 1. Calculate the target to delegate to align
 
         // Work out the direction to target
-        Vector3 direction = target.position - character.position;
+        Vector3 direction = realTarget.position - character.position;
 
         // Check for a zero direction, and make no change if so
         if (direction.magnitude == 0)
         {
-            faceTarget.orientation = target.orientation;
+            target.orientation = realTarget.orientation;
+            base.Update();
             return;
         }
 
         // 2. Delegate to align (Align component already attached to target)
-        faceTarget.orientation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        target.orientation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        base.Update();
 
         // If debugging, draw the target (crosshair)
         if (character.debugInfo)
@@ -50,8 +49,8 @@ public class Face : MonoBehaviour
                 character.position,
                 character.rotationDebugRadius - 0.05f,
                 Color.cyan,
-                faceTarget.orientation - 5,
-                faceTarget.orientation + 5
+                target.orientation - 5,
+                target.orientation + 5
             );
         }
     }
