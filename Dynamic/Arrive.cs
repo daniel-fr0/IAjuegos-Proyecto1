@@ -39,7 +39,7 @@ public class Arrive : Seeker
     void arriveUpdate() {
         // Draw the target+slow radius for debugging
         character.DrawRadius(target.position, targetRadius, Color.cyan);
-        character.DrawRadius(target.position, slowRadius, Color.magenta);
+        character.DrawRadius(target.position, slowRadius, Color.blue);
 
         // Get the direction to the target
         Vector3 direction = target.position - character.position;
