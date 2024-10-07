@@ -12,6 +12,7 @@ public class LookWhereYoureGoing : Align
 
         // Create a target for the Align behavior
         GameObject targetObject = new GameObject("LWYK Target");
+        targetObject.transform.parent = transform;
         faceTarget = targetObject.AddComponent<Kinematic>();
         target = faceTarget;
     }

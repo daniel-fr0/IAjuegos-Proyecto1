@@ -19,6 +19,7 @@ public class Pursue : MonoBehaviour
 
         // Create a target for the Seek behavior
         GameObject targetObject = new GameObject("Pursue Target");
+        targetObject.transform.parent = transform;
         pursueTarget = targetObject.AddComponent<Kinematic>();
         pursueTarget.position = target.position;
 

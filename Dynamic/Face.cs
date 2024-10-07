@@ -6,17 +6,18 @@ public class Face : Align
 {
     public Kinematic realTarget;
     // Start is called before the first frame update
-    new void Start()
+    new protected void Start()
     {
         base.Start();
 
         // Create a target for the Align behavior
         GameObject targetObject = new GameObject("Face Target");
+        targetObject.transform.parent = transform;
         target = targetObject.AddComponent<Kinematic>();
     }
 
     // Update is called once per frame
-    new void Update()
+    new protected void Update()
     {
         // 1. Calculate the target to delegate to align
 
