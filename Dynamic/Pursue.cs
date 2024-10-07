@@ -57,7 +57,7 @@ public class Pursue : MonoBehaviour
         // If debugging, draw the radius for the prediction
         if (character.debugInfo)
         {
-            character.DrawRadius(seeker.target.position, targetDebugRadius, Color.grey);
+            character.DrawRadius(seeker.target.position, targetDebugRadius, Color.cyan);
         }
     }
 }

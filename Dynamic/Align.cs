@@ -6,14 +6,14 @@ public class Align : MonoBehaviour
 {
     protected Kinematic character;
     public Kinematic target;
-    public float maxAngularAcceleration = 1440.0f;
-    public float maxRotation = 360.0f;
+    public float maxAngularAcceleration = 2160.0f;
+    public float maxRotation = 720.0f;
     // The radius for arriving at the target
-    public float targetRadius = 0.5f;
+    public float targetRadius = 0.1f;
     // The radius for beginning to slow down
-    public float slowRadius = 90.0f;
+    public float slowRadius = 120.0f;
     // The time over which to achieve target speed
-    public float timeToTarget = 0.1f;
+    public float timeToTarget = 0.01f;
     protected SteeringOutput steering;
     // Start is called before the first frame update
     protected void Start()

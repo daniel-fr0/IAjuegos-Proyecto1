@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Face : Align
 {
-    private Kinematic realTarget;
+    public Kinematic realTarget;
     // Start is called before the first frame update
     new void Start()
     {
         base.Start();
-        realTarget = target;
 
         // Create a target for the Align behavior
         GameObject targetObject = new GameObject("Face Target");

@@ -10,7 +10,7 @@ public class DynamicController : MonoBehaviour
     public float maxAcceleration = 20.0f;
     private float speed;
     private float acceleration;
-    public float timeToTarget = 0.1f;
+    public float timeToTarget = 0.01f;
     private SteeringOutput steering;
 
     // Start is called before the first frame update
