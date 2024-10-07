@@ -18,11 +18,10 @@ public class KinematicWander : MonoBehaviour
     {
         // Get orientation of character as a vector
         // Orientation is an angle from +X axis
-        float vX = Mathf.Cos(character.orientation * Mathf.Deg2Rad);
-        float vY = Mathf.Sin(character.orientation * Mathf.Deg2Rad);
+        Vector3 orientation = character.GetOrientationAsVector();
 
         // Get velocity from the vector form of the orientation
-        character.velocity = new Vector3(vX, vY, 0) * maxSpeed;
+        character.velocity = orientation * maxSpeed;
 
         // Change our orientation randomly       
         character.rotation = Random.Range(-maxRotation, maxRotation);

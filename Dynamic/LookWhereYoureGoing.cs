@@ -26,7 +26,7 @@ public class LookWhereYoureGoing : Align
         // Check for a zero direction, and make no change if so
         if (character.velocity.magnitude <= Mathf.Epsilon*1e15)
             // For debugging, crosshair direction
-            crossHairDirection = new Vector3(Mathf.Cos(faceTarget.orientation * Mathf.Deg2Rad), Mathf.Sin(faceTarget.orientation * Mathf.Deg2Rad), 0);
+            crossHairDirection = faceTarget.GetOrientationAsVector();
         else
         {
             // Otherwise set the target based on the velocity

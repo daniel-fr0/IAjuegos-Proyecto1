@@ -82,6 +82,11 @@ public class Kinematic : MonoBehaviour
 		}
 	}
 
+	public Vector3 GetOrientationAsVector()
+	{
+		return new Vector3(Mathf.Cos(orientation * Mathf.Deg2Rad), Mathf.Sin(orientation * Mathf.Deg2Rad), 0);
+	}
+
 	private void DrawRotation(Color positive, Color negative, float step = 10)
 	{
 		if (rotation > 0)
