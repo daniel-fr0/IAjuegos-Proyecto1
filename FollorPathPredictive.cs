@@ -8,7 +8,7 @@ public class FollowPathPredictive : MonoBehaviour
     public Path path;
     // The distance along the path to generate the target.
     // Can be negative to generate a target behind the character.
-    public float targetOffset = 0.25f;
+    public float targetOffset = 1.0f;
     // The current position we are seeking along the path
     public float currentParam = 0.0f;
     public int maxParamCheck = 0;
