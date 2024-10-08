@@ -40,5 +40,15 @@ public class FollowPathPredictive : MonoBehaviour
         seeker.target.position = path.getPosition(targetParam);
 
         // 2. Delegate to seek behavior (target already set)
+
+        // Debug info
+        if (character.debugInfo)
+        {
+            // Draw the future position
+            character.DrawRadius(futurePosition, 0.1f, Color.gray);
+
+            // Draw the target
+            character.DrawRadius(seeker.target.position, 0.1f, Color.cyan);
+        }
     }
 }

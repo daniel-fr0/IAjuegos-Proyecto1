@@ -35,5 +35,12 @@ public class FollowPathRabbit : MonoBehaviour
         seeker.target.position = path.getPosition(targetParam);
 
         // 2. Delegate to seek behavior (target already set)
+
+        // Debug info
+        if (character.debugInfo)
+        {
+            // Draw the target
+            character.DrawRadius(seeker.target.position, 0.1f, Color.cyan);
+        }
     }
 }
