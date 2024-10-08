@@ -13,6 +13,7 @@ public class Path : MonoBehaviour
     public float polygonRadius;
     public bool looped = true;
     private GameObject[] points;
+    public bool hideSprite = true;
     public bool debugInfo = false;
 
 
@@ -34,6 +35,12 @@ public class Path : MonoBehaviour
             {
                 points[i] = transform.GetChild(i).gameObject;
             }
+        }
+
+        // Hide the sprite renderer if specified
+        if (hideSprite)
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
@@ -202,16 +209,20 @@ public class Path : MonoBehaviour
 
             // Add a sphere at the start of the path
             Gizmos.DrawSphere(start, 0.1f);
+
+            // Add a sphere at the end of the path
+            if (i == numPoints - 2)
+            {
+                Gizmos.DrawSphere(end, 0.1f);
+            }
         }
-        // Draw the last segment
+
+        // Draw the closing segment if the path is looped
         if (looped)
         {
             Vector3 start = transform.GetChild(numPoints - 1).position;
             Vector3 end = transform.GetChild(0).position;
             Gizmos.DrawLine(start, end);
-
-            // Add a sphere at the start of the path
-            Gizmos.DrawSphere(start, 0.1f);
         }
     }
 
