@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Path : MonoBehaviour
 {
-    // Number of vertices in the path
+    // Number of points in the path
     public int numPoints;
+
+    // Number of sides in the polygon
+    public int polygonSides;
     // Radius of the path
-    public float radius;
+    public float polygonRadius;
     public bool looped = true;
-    public GameObject[] points;
+    private GameObject[] points;
     public bool debugInfo = false;
 
 
@@ -17,13 +20,20 @@ public class Path : MonoBehaviour
     void Start()
     {
         // If the path is empty, create it
-        if (points.Length == 0)
+        if (transform.childCount == 0)
         {
             createPath();
         }
         else
         {
-            numPoints = points.Length;
+            // Get the number of points
+            numPoints = transform.childCount;
+            // Get the points
+            points = new GameObject[numPoints];
+            for (int i = 0; i < numPoints; i++)
+            {
+                points[i] = transform.GetChild(i).gameObject;
+            }
         }
     }
 
@@ -44,15 +54,24 @@ public class Path : MonoBehaviour
 
     public void createPath()
     {
+        // Create a new path with the given number of points
+        numPoints = polygonSides;
         points = new GameObject[numPoints];
         // Create the path based on the number of points and radius
         for (int i = 0; i < numPoints; i++)
         {
+            // Calculate the angle of the point
             float angle = 2 * Mathf.PI * i / numPoints;
-            Vector3 position = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
-            GameObject point = new GameObject("Point" + i);
+
+            // Calculate the position of the point
+            Vector3 position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * polygonRadius;
+
+            // Create the point
+            GameObject point = new GameObject("Point " + i);
             point.transform.parent = transform;
             point.transform.localPosition = position;
+
+            // Add the point to the list
             points[i] = point;
         }
     }
@@ -170,11 +189,19 @@ public class Path : MonoBehaviour
             return;
         }
 
+        if (numPoints <= 0)
+        {
+            return;
+        }
+
         for (int i = 0; i < numPoints - 1; i++)
         {
             Vector3 start = transform.GetChild(i).position;
             Vector3 end = transform.GetChild(i + 1).position;
             Gizmos.DrawLine(start, end);
+
+            // Add a sphere at the start of the path
+            Gizmos.DrawSphere(start, 0.1f);
         }
         // Draw the last segment
         if (looped)
@@ -182,6 +209,9 @@ public class Path : MonoBehaviour
             Vector3 start = transform.GetChild(numPoints - 1).position;
             Vector3 end = transform.GetChild(0).position;
             Gizmos.DrawLine(start, end);
+
+            // Add a sphere at the start of the path
+            Gizmos.DrawSphere(start, 0.1f);
         }
     }
 
