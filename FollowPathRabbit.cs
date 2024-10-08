@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPathRabit : MonoBehaviour
+public class FollowPathRabbit : MonoBehaviour
 {
     public Seeker seeker;
     public Path path;
