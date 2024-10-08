@@ -66,15 +66,20 @@ public class Path : MonoBehaviour
         }
 
         // Find the closest point on the path to the given position
+        int currentPos = (int)lastParam;
         float closestDistance = float.MaxValue;
         float closestParam = lastParam;
 
         // Start checking from the last point until reaching the max param check
-        for (int i = (int)lastParam; i < (int)lastParam + maxParamCheck - 1; i++)
+        for (int i = currentPos; i < currentPos + maxParamCheck - 1; i++)
         {
+            // Wrap the index around
+            int startIndex = i % numPoints;
+            int endIndex = (i + 1) % numPoints;
+        
             // Get the start and end points of the segment
-            Vector3 start = points[i].transform.position;
-            Vector3 end = points[(i + 1) % numPoints].transform.position;
+            Vector3 start = points[startIndex].transform.position;
+            Vector3 end = points[endIndex].transform.position;
 
             // Find the closest point on the segment
             Vector3 closest;
@@ -100,7 +105,7 @@ public class Path : MonoBehaviour
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestParam = i + param;
+                closestParam = startIndex + param;
             }
         }
 
