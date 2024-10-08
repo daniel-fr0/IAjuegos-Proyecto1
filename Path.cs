@@ -30,6 +30,12 @@ public class Path : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If the F key or triangle button is pressed, toggle debug info
+        if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.JoystickButton3))
+        {
+            debugInfo = !debugInfo;
+        }
+
         if (debugInfo)
         {
             DrawPath();
@@ -140,6 +146,12 @@ public class Path : MonoBehaviour
 
     public void OnDrawGizmos()
     {
+        // If in game mode, don't draw path
+        if (Application.isPlaying)
+        {
+            return;
+        }
+
         for (int i = 0; i < numPoints - 1; i++)
         {
             Vector3 start = transform.GetChild(i).position;
