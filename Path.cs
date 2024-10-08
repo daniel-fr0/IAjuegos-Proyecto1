@@ -11,6 +11,8 @@ public class Path : MonoBehaviour
     public int polygonSides;
     // Radius of the path
     public float polygonRadius;
+    public float startAngle = 0;
+    public bool clockWise = false;
     public bool looped = true;
     private GameObject[] points;
     public bool hideSprite = true;
@@ -61,6 +63,7 @@ public class Path : MonoBehaviour
 
     public void createPath()
     {
+        float sign = clockWise ? -1 : 1;
         // Create a new path with the given number of points
         numPoints = polygonSides;
         points = new GameObject[numPoints];
@@ -68,7 +71,7 @@ public class Path : MonoBehaviour
         for (int i = 0; i < numPoints; i++)
         {
             // Calculate the angle of the point
-            float angle = 2 * Mathf.PI * i / numPoints;
+            float angle = startAngle + 2 * Mathf.PI * i / numPoints * sign;
 
             // Calculate the position of the point
             Vector3 position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * polygonRadius;
