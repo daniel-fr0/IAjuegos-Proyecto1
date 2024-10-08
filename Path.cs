@@ -57,12 +57,12 @@ public class Path : MonoBehaviour
         }
     }
 
-    public float getParam(Vector3 position, float lastParam, int maxParamCheck = -1)
+    public float getParam(Vector3 position, float lastParam, int maxParamCheck = 0)
     {
         // If a max param check is not provided, check all points
-        if (maxParamCheck == -1)
+        if (maxParamCheck == 0)
         {
-            maxParamCheck = numPoints;
+            maxParamCheck = numPoints - 1;
         }
 
         // Find the closest point on the path to the given position
@@ -71,7 +71,7 @@ public class Path : MonoBehaviour
         float closestParam = lastParam;
 
         // Start checking from the last point until reaching the max param check
-        for (int i = currentPos; i < currentPos + maxParamCheck - 1; i++)
+        for (int i = currentPos; i < currentPos + maxParamCheck; i++)
         {
             // Wrap the index around
             int startIndex = i % numPoints;
@@ -114,28 +114,41 @@ public class Path : MonoBehaviour
 
     public Vector3 getPosition(float param)
     {
-
-        // If the path is looped, wrap the parameter
-        if (looped)
+        // If the path is not looped
+        if (!looped)
         {
-            param = param % (numPoints - 1);
+            // If the param is less than 0, return the first point
+            if (param < 0)
+            {
+                return points[0].transform.position;
+            }
+            // If the param is greater than the number of points, return the last point
+            if (param > numPoints - 1)
+            {
+                return points[numPoints - 1].transform.position;
+            }
         }
 
-        // Otherwise, clamp the parameter so it is within the path
-        // it will specify at most the last point
-        else
-        {
-            param = Mathf.Clamp(param, 0.0f, numPoints - 1);
-        }
+        // Loop the param to stay in the range [0, numPoints)
+        param = Mathf.Repeat(param, numPoints);
+
+        // Regular case
+        int startIndex = (int)param;
+        int endIndex = (startIndex + 1) % numPoints;
 
         // Get the start and end points of the segment
-        int index = (int)param;
-        Vector3 start = transform.GetChild(index).position;
-        Vector3 end = transform.GetChild((index + 1) % numPoints).position;
+        Vector3 start = points[startIndex].transform.position;
+        Vector3 end = points[endIndex].transform.position;
 
-        // Interpolate between the points
-        float t = param - index;
-        return Vector3.Lerp(start, end, t);
+        // If the segment is too small, return the start point
+        if (Vector3.Distance(start, end) < 0.01f)
+        {
+            return start;
+        }
+
+        // Calculate the point on the segment
+        float localParam = param - startIndex;
+        return Vector3.Lerp(start, end, localParam);
     }
 
     public void reversePath()

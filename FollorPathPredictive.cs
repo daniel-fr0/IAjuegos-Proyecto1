@@ -8,9 +8,10 @@ public class FollowPathPredictive : MonoBehaviour
     public Path path;
     // The distance along the path to generate the target.
     // Can be negative to generate a target behind the character.
-    public float targetOffset = 1.0f;
+    public float targetOffset = 0.25f;
     // The current position we are seeking along the path
     public float currentParam = 0.0f;
+    public int maxParamCheck = 0;
     // The time in the future to predict the character position
     public float predictionTime = 0.1f;
     private Kinematic character;
@@ -18,7 +19,12 @@ public class FollowPathPredictive : MonoBehaviour
     void Start()
     {
         character = GetComponent<Kinematic>();
+
+        // Create a target object
         GameObject targetObj = new GameObject("FollowPath Target");
+        targetObj.transform.parent = transform;
+
+        // Attach target to the seeker
         seeker.target = targetObj.AddComponent<Kinematic>();
     }
 
@@ -31,7 +37,7 @@ public class FollowPathPredictive : MonoBehaviour
         Vector3 futurePosition = character.position + character.velocity * predictionTime;
 
         // Find the current position on the path
-        currentParam = path.getParam(futurePosition, currentParam);
+        currentParam = path.getParam(futurePosition, currentParam, maxParamCheck);
 
         // Offset the target
         float targetParam = currentParam + targetOffset;
