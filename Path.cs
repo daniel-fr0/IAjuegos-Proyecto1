@@ -8,7 +8,7 @@ public class Path : MonoBehaviour
     public int numPoints;
     // Radius of the path
     public float radius;
-    public bool looped = false;
+    public bool looped = true;
     public GameObject[] points;
     public bool debugInfo = false;
 
@@ -146,6 +146,13 @@ public class Path : MonoBehaviour
             Vector3 end = transform.GetChild(i + 1).position;
             Gizmos.DrawLine(start, end);
         }
+        // Draw the last segment
+        if (looped)
+        {
+            Vector3 start = transform.GetChild(numPoints - 1).position;
+            Vector3 end = transform.GetChild(0).position;
+            Gizmos.DrawLine(start, end);
+        }
     }
 
     public void DrawPath()
@@ -154,6 +161,13 @@ public class Path : MonoBehaviour
         {
             Vector3 start = transform.GetChild(i).position;
             Vector3 end = transform.GetChild(i + 1).position;
+            Debug.DrawLine(start, end, Color.gray);
+        }
+        // Draw the last segment
+        if (looped)
+        {
+            Vector3 start = transform.GetChild(numPoints - 1).position;
+            Vector3 end = transform.GetChild(0).position;
             Debug.DrawLine(start, end, Color.gray);
         }
     }
