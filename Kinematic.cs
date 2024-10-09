@@ -14,6 +14,7 @@ public class Kinematic : MonoBehaviour
 	public bool debugInfo = false;
 	public float rotationDebugRadius = 0.5f;
 	public bool usingAligner = false;
+	public SteeringOutput separationSteering = new SteeringOutput();
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +57,10 @@ public class Kinematic : MonoBehaviour
 
 	public void ApplySteering(SteeringOutput steering, float maxSpeed = float.MaxValue, float maxRotation = float.MaxValue)
 	{
+		// Add extra steering when using separation
+		steering.linear += separationSteering.linear;
+		separationSteering = new SteeringOutput();
+
 		velocity += steering.linear * Time.deltaTime;
 		rotation += steering.angular * Time.deltaTime;
 

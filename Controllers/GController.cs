@@ -59,6 +59,17 @@ public class GameController : MonoBehaviour
             }
         }
 
+        // Toggle game objects to separate with Left Control key or circle button
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.JoystickButton2))
+        {
+            // Look for all separation scripts
+            Separation[] separations = FindObjectsOfType<Separation>();
+            foreach (Separation separation in separations)
+            {
+                separation.active = !separation.active;
+            }
+        }
+
         // Esc or start button to toggle pause
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton9))
         {
