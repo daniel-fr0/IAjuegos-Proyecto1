@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (scenes.Length == 0) return;
+        
         // Set the first scene to active
         scenes[scene].SetActive(true);
         // Set the rest of the scenes to inactive
