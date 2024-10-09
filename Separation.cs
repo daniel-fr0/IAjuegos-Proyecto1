@@ -74,7 +74,7 @@ public class Separation : MonoBehaviour
 
 
 			Debug.DrawRay(character.position, linear, Color.red);
-			character.DrawRadius(character.position, threshold, Color.blue);
+			character.DrawRadius(character.position, threshold, Color.red);
 		}
     }
 }
