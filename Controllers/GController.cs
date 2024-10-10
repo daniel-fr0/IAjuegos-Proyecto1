@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    private int scene = 0;
+    public int scene = 0;
     public GameObject[] scenes;
     public GameObject[] toggleShow;
     public Seeker[] toggleFlee;
@@ -15,12 +15,10 @@ public class GameController : MonoBehaviour
     {
         if (scenes.Length == 0) return;
         
-        // Set the first scene to active
-        scenes[scene].SetActive(true);
-        // Set the rest of the scenes to inactive
-        for (int i = 1; i < scenes.Length; i++)
+        // Set right scene active
+        for (int i = 0; i < scenes.Length; i++)
         {
-            scenes[i].SetActive(false);
+            scenes[i].SetActive(i == scene);
         }
     }
 

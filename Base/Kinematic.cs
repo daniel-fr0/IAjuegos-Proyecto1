@@ -14,6 +14,7 @@ public class Kinematic : MonoBehaviour
 	public bool debugInfo = false;
 	public float rotationDebugRadius = 0.5f;
 	public bool usingAligner = false;
+	public float accelerationDebugScale = 0.1f;
 	public SteeringOutput separationSteering = new SteeringOutput();
 
     // Start is called before the first frame update
@@ -73,6 +74,12 @@ public class Kinematic : MonoBehaviour
 		if (Mathf.Abs(rotation) > maxRotation)
 		{
 			rotation = Mathf.Sign(rotation) * maxRotation;
+		}
+
+		// If debug, draw acceleration
+		if (debugInfo)
+		{
+			Debug.DrawRay(position, steering.linear * accelerationDebugScale, Color.red);
 		}
 	}
 
