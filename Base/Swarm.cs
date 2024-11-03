@@ -39,6 +39,9 @@ public class Swarm : MonoBehaviour
 
         // Unrender self
         GetComponent<SpriteRenderer>().enabled = false;
+
+        // Remove prefab from scene
+        Destroy(prefab);
     }
 
     // Update is called once per frame
