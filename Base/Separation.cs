@@ -40,6 +40,9 @@ public class Separation : MonoBehaviour
 			// Check if the target is not the current object
 			if (target == character) continue;
 
+			// Skip disabled targets
+			if (!target.gameObject.active) continue;
+
 			// Check if the target is close
 			Vector3 direction = character.position - target.position;
 			float distance = direction.magnitude;
@@ -77,4 +80,9 @@ public class Separation : MonoBehaviour
 			character.DrawRadius(character.position, threshold, Color.red);
 		}
     }
+
+	void OnDestroy()
+	{
+		targets.Remove(character);
+	}
 }
