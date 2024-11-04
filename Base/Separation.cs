@@ -41,7 +41,7 @@ public class Separation : MonoBehaviour
 			if (target == character) continue;
 
 			// Skip disabled targets
-			if (!target.gameObject.active) continue;
+			if (!target.gameObject.activeInHierarchy) continue;
 
 			// Check if the target is close
 			Vector3 direction = character.position - target.position;
