@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.JoystickButton2))
         {
             // Look for all separation scripts
-            Separation[] separations = FindObjectsOfType<Separation>();
+            Separation[] separations = FindObjectsByType<Separation>(FindObjectsSortMode.None);
             foreach (Separation separation in separations)
             {
                 separation.active = !separation.active;
