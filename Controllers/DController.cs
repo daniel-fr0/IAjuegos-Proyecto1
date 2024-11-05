@@ -10,7 +10,6 @@ public class DynamicController : MonoBehaviour
     public float maxAcceleration = 20.0f;
     private float speed;
     private float acceleration;
-    public float timeToTarget = 0.01f;
     private SteeringOutput steering;
 
     // Start is called before the first frame update
@@ -33,12 +32,12 @@ public class DynamicController : MonoBehaviour
 
         // Apply steering to the character
         steering.linear = targetVelocity - character.velocity;
-        steering.linear /= timeToTarget;
-        if (steering.linear.magnitude > acceleration)
+        if (steering.linear.magnitude > acceleration * Time.deltaTime)
         {
             steering.linear.Normalize();
-            steering.linear *= acceleration;
+            steering.linear *= acceleration * Time.deltaTime;
         }
+        steering.linear /= Time.deltaTime;
 
         character.ApplySteering(steering, speed);
         character.NewOrientation();
