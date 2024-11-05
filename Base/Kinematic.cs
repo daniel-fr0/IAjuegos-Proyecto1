@@ -16,6 +16,9 @@ public class Kinematic : MonoBehaviour
 	public bool usingAligner = false;
 	public float accelerationDebugScale = 0.1f;
 	public SteeringOutput separationSteering = new SteeringOutput();
+	// Constraints like freeze position or rotation
+	public bool freezePosition = false;
+	public bool freezeRotation = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +36,8 @@ public class Kinematic : MonoBehaviour
 		orientation += rotation * Time.deltaTime;
 
 		// Update object's position and rotation
-		transform.position = position;
-		transform.rotation = Quaternion.Euler(0, 0, orientation);
+		if (!freezePosition) transform.position = position;
+		if (!freezeRotation) transform.rotation = Quaternion.Euler(0, 0, orientation);
 
 		// Record speed (For Debugging)
 		speed = velocity.magnitude;
