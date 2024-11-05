@@ -22,5 +22,11 @@ public class SpriteAnimationController : MonoBehaviour
         animator.SetFloat("Horizontal", orientation.x);
         animator.SetFloat("Vertical", orientation.y);
         animator.SetFloat("Speed", character.speed);
+
+        // Attack animation is triggered by the space bar
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetTrigger("TriggerAttack");
+        }
     }
 }
