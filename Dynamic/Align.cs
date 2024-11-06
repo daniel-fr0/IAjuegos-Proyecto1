@@ -15,6 +15,7 @@ public class Align : MonoBehaviour
     // The time over which to achieve target speed
     public float timeToTarget = 0.01f;
     protected SteeringOutput steering;
+    public bool showRadius = true;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -27,7 +28,7 @@ public class Align : MonoBehaviour
     protected void Update()
     {
         // Draw radiuses for debugging
-        if (character.debugInfo)
+        if (character.debugInfo && showRadius)
         {
             character.DrawArc(character.position, character.rotationDebugRadius-0.1f, Color.magenta, character.orientation-slowRadius, character.orientation+slowRadius);
             character.DrawArc(character.position, character.rotationDebugRadius-0.2f, Color.cyan, character.orientation-targetRadius, character.orientation+targetRadius);

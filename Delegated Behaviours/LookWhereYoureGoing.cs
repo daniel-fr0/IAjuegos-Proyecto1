@@ -5,6 +5,7 @@ using UnityEngine;
 public class LookWhereYoureGoing : Align
 {
     private Kinematic faceTarget;
+    public bool showTarget = true;
     // Start is called before the first frame update
     new void Start()
     {
@@ -25,7 +26,7 @@ public class LookWhereYoureGoing : Align
         Vector3 crossHairDirection; // For debugging
 
         // Check for a zero direction, and make no change if so
-        if (character.velocity.magnitude <= Mathf.Epsilon*1e15)
+        if (character.velocity.magnitude <= 0.01)
             // For debugging, crosshair direction
             crossHairDirection = Kinematic.OrientationAsVector(faceTarget.orientation);
         else
@@ -41,7 +42,7 @@ public class LookWhereYoureGoing : Align
         base.Update();
 
         // If debugging, draw the target (crosshair)
-        if (character.debugInfo)
+        if (character.debugInfo && showTarget)
         {
             Debug.DrawLine(
                 character.position + crossHairDirection * (character.rotationDebugRadius-0.1f),
