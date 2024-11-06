@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
 	public float minZoom = 5f;      // Minimum zoom distance
 	public float maxZoom = 15f;     // Maximum zoom distance
 	public float zoomSpeed = 1f;    // Speed of zooming
+	public float zoomStep = 3f;	 // Size of zoom steps with controller
 
 	public float currentZoom = 10f; // Current zoom level
 	private InputSystem_Actions controls;
@@ -37,8 +38,8 @@ public class CameraController : MonoBehaviour
 
 	void UpdateZoom(float zoomInput)
 	{
-		int direction = zoomInput > 0 ? 1 : -1;
-		currentZoom -= direction * zoomSpeed;
+		float input = Mathf.Abs(zoomInput) < 1f ? Mathf.Sign(zoomInput) * zoomStep : zoomInput;
+		currentZoom -= input * zoomSpeed;
 		currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
 	}
 

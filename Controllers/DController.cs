@@ -12,23 +12,57 @@ public class DynamicController : MonoBehaviour
     private float acceleration;
     private SteeringOutput steering;
 
+    #region Input System
+    public Vector3 input;
+    private InputSystem_Actions controls;
+
+    void Awake()
+    {
+        controls = new InputSystem_Actions();
+
+        controls.Player.Move.performed += ctx => input = ctx.ReadValue<Vector2>();
+        controls.Player.Sprint.performed += ctx => UpdateSpeed(ctx.ReadValue<float>());
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
+    void UpdateSpeed(float sprint)
+    {
+        if (sprint > 0)
+        {
+            speed = maxSpeed * 2;
+            acceleration = maxAcceleration * 2;
+        }
+        else
+        {
+            speed = maxSpeed;
+            acceleration = maxAcceleration;
+        }
+    }
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
         character = GetComponent<Kinematic>();
         steering = new SteeringOutput();
+        speed = maxSpeed;
+        acceleration = maxAcceleration;
     }
 
     // Update is called once per frame
     void Update()
     {
-        speed = maxSpeed;
-        acceleration = maxAcceleration;
-        
-        Vector3 targetVelocity = getInputVelocity();
-
         // Target velocity is the input direction times the max speed
-        targetVelocity *= speed;
+        Vector3 targetVelocity = input * speed;
 
         // Apply steering to the character
         steering.linear = targetVelocity - character.velocity;
@@ -41,25 +75,5 @@ public class DynamicController : MonoBehaviour
 
         character.ApplySteering(steering, speed);
         character.NewOrientation();
-    }
-
-    private Vector3 getInputVelocity()
-    {
-        // Double the speed when pressing left shift or R2
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton7))
-        {
-            speed *= 2;
-            acceleration *= 2;
-        }
-
-        float dX = Input.GetAxis("Horizontal");
-        float dY = Input.GetAxis("Vertical");
-        Vector3 input = new Vector3(dX, dY, 0);
-        if (input.magnitude > 1)
-        {
-            input.Normalize();
-        }
-
-        return input;
     }
 }
