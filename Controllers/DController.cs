@@ -59,19 +59,19 @@ public class DynamicController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // Target velocity is the input direction times the max speed
         Vector3 targetVelocity = input * speed;
 
         // Apply steering to the character
         steering.linear = targetVelocity - character.velocity;
-        if (steering.linear.magnitude > acceleration * Time.deltaTime)
+        if (steering.linear.magnitude > acceleration * Time.fixedDeltaTime)
         {
             steering.linear.Normalize();
-            steering.linear *= acceleration * Time.deltaTime;
+            steering.linear *= acceleration * Time.fixedDeltaTime;
         }
-        steering.linear /= Time.deltaTime;
+        steering.linear /= Time.fixedDeltaTime;
 
         character.ApplySteering(steering, speed);
         character.NewOrientation();
