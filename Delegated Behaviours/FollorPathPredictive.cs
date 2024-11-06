@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPathPredictive : MonoBehaviour
+public class FollowPathPredictive : PathFollowing
 {
-    public Seeker seeker;
-    public Path path;
     // The distance along the path to generate the target.
     // Can be negative to generate a target behind the character.
     public float targetOffset = 1.0f;
@@ -31,6 +29,11 @@ public class FollowPathPredictive : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (path.numPoints == 0)
+        {
+            return;
+        }
+        
         // 1. Calculate the target to delegate to seek
         
         // Find the predicted future location

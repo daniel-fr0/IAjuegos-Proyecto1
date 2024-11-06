@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPathRabbit : MonoBehaviour
+public class FollowPathRabbit : PathFollowing
 {
-    public Seeker seeker;
-    public Path path;
     // The distance along the path to generate the target.
     // Can be negative to generate a target behind the character.
     public float targetOffset = 1.0f;
@@ -29,6 +27,11 @@ public class FollowPathRabbit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (path.numPoints == 0)
+        {
+            return;
+        }
+
         // 1. Calculate the target to delegate to seek
         
         // Get the current position on the path
