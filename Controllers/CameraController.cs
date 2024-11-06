@@ -8,21 +8,37 @@ public class CameraController : MonoBehaviour
 
 	public float minZoom = 5f;      // Minimum zoom distance
 	public float maxZoom = 15f;     // Maximum zoom distance
-	public float zoomSpeed = 10f;    // Speed of zooming
+	public float zoomSpeed = 1f;    // Speed of zooming
 
 	public float currentZoom = 10f; // Current zoom level
+	private InputSystem_Actions controls;
 
 	void Awake()
 	{
 		// Set the camera's orthographic size to the current zoom level
 		Camera.main.orthographicSize = currentZoom;
+
+		controls = new InputSystem_Actions();
+		controls.Camera.Zoom.performed += ctx => UpdateZoom(ctx.ReadValue<float>());
 	}
 
-	void Update()
+	#region Enable/Disable Input System
+	void OnEnable()
 	{
-		// Zoom input from the mouse scroll wheel
-		float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-		currentZoom -= scrollInput * zoomSpeed;
+		controls.Enable();
+	}
+
+	void OnDisable()
+	{
+		controls.Disable();
+	}
+
+	#endregion
+
+	void UpdateZoom(float zoomInput)
+	{
+		int direction = zoomInput > 0 ? 1 : -1;
+		currentZoom -= direction * zoomSpeed;
 		currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
 	}
 
