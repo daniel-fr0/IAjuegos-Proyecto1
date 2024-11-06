@@ -14,7 +14,7 @@ public class Path : MonoBehaviour
     public float startAngle = 0;
     public bool clockWise = false;
     public bool looped = true;
-    private GameObject[] points;
+    public Vector3[] points;
     public bool hideSprite = true;
     public bool debugInfo = false;
 
@@ -23,24 +23,24 @@ public class Path : MonoBehaviour
     void Start()
     {
         // If the path is empty, create it
-        if (transform.childCount == 0)
+        if (transform.childCount == 0 && numPoints == 0)
         {
             createPath();
         }
-        else
+        else if (numPoints == 0)
         {
             // Get the number of points
             numPoints = transform.childCount;
             // Get the points
-            points = new GameObject[numPoints];
+            points = new Vector3[numPoints];
             for (int i = 0; i < numPoints; i++)
             {
-                points[i] = transform.GetChild(i).gameObject;
+                points[i] = transform.GetChild(i).gameObject.transform.position;
             }
         }
 
         // Hide the sprite renderer if specified
-        if (hideSprite)
+        if (hideSprite && GetComponent<SpriteRenderer>() != null)
         {
             GetComponent<SpriteRenderer>().enabled = false;
         }
@@ -62,11 +62,13 @@ public class Path : MonoBehaviour
     }
 
     public void createPath()
-    {
+    {   
+        if (polygonSides ==  0) return;
+        
         float sign = clockWise ? -1 : 1;
         // Create a new path with the given number of points
         numPoints = polygonSides;
-        points = new GameObject[numPoints];
+        points = new Vector3[numPoints];
         // Create the path based on the number of points and radius
         for (int i = 0; i < numPoints; i++)
         {
@@ -82,7 +84,7 @@ public class Path : MonoBehaviour
             point.transform.localPosition = position;
 
             // Add the point to the list
-            points[i] = point;
+            points[i] = point.transform.position;
         }
     }
 
@@ -107,8 +109,8 @@ public class Path : MonoBehaviour
             int endIndex = (i + 1) % numPoints;
         
             // Get the start and end points of the segment
-            Vector3 start = points[startIndex].transform.position;
-            Vector3 end = points[endIndex].transform.position;
+            Vector3 start = points[startIndex];
+            Vector3 end = points[endIndex];
 
             // Find the closest point on the segment
             Vector3 closest;
@@ -149,12 +151,12 @@ public class Path : MonoBehaviour
             // If the param is less than 0, return the first point
             if (param < 0)
             {
-                return points[0].transform.position;
+                return points[0];
             }
             // If the param is greater than the number of points, return the last point
             if (param > numPoints - 1)
             {
-                return points[numPoints - 1].transform.position;
+                return points[numPoints - 1];
             }
         }
 
@@ -166,8 +168,8 @@ public class Path : MonoBehaviour
         int endIndex = (startIndex + 1) % numPoints;
 
         // Get the start and end points of the segment
-        Vector3 start = points[startIndex].transform.position;
-        Vector3 end = points[endIndex].transform.position;
+        Vector3 start = points[startIndex];
+        Vector3 end = points[endIndex];
 
         // If the segment is too small, return the start point
         if (Vector3.Distance(start, end) < 0.01f)
@@ -185,7 +187,7 @@ public class Path : MonoBehaviour
         // Reverse the order of the points
         for (int i = 0; i < numPoints / 2; i++)
         {
-            GameObject temp = points[i];
+            Vector3 temp = points[i];
             points[i] = points[numPoints - i - 1];
             points[numPoints - i - 1] = temp;
         }
@@ -199,12 +201,12 @@ public class Path : MonoBehaviour
             return;
         }
 
-        if (numPoints <= 0)
+        if (transform.childCount <= 0)
         {
             return;
         }
 
-        for (int i = 0; i < numPoints - 1; i++)
+        for (int i = 0; i < transform.childCount - 1; i++)
         {
             Vector3 start = transform.GetChild(i).position;
             Vector3 end = transform.GetChild(i + 1).position;
@@ -223,7 +225,7 @@ public class Path : MonoBehaviour
         // Draw the closing segment if the path is looped
         if (looped)
         {
-            Vector3 start = transform.GetChild(numPoints - 1).position;
+            Vector3 start = transform.GetChild(transform.childCount - 1).position;
             Vector3 end = transform.GetChild(0).position;
             Gizmos.DrawLine(start, end);
         }
@@ -233,15 +235,15 @@ public class Path : MonoBehaviour
     {
         for (int i = 0; i < numPoints - 1; i++)
         {
-            Vector3 start = transform.GetChild(i).position;
-            Vector3 end = transform.GetChild(i + 1).position;
+            Vector3 start = points[i];
+            Vector3 end = points[i + 1];
             Debug.DrawLine(start, end, Color.gray);
         }
         // Draw the last segment
         if (looped)
         {
-            Vector3 start = transform.GetChild(numPoints - 1).position;
-            Vector3 end = transform.GetChild(0).position;
+            Vector3 start = points[numPoints - 1];
+            Vector3 end = points[0];
             Debug.DrawLine(start, end, Color.gray);
         }
     }
