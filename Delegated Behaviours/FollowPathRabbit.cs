@@ -27,7 +27,7 @@ public class FollowPathRabbit : PathFollowing
     // Update is called once per frame
     void Update()
     {
-        if (path.numPoints == 0)
+        if (path.points == null || path.points.Length == 0)
         {
             return;
         }

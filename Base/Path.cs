@@ -1,18 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using System;
+
+[CustomEditor(typeof(Path))]
+public class PathEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        Path path = (Path)target;
+
+        // Draw the default inspector
+        DrawDefaultInspector();
+
+        // Add a button to create the path
+        if (GUILayout.Button("Create Path"))
+        {
+            path.createPath();
+            Debug.Log("Path Created!");
+        }
+
+        // Add a button to clear the path
+        if (GUILayout.Button("Clear Path"))
+        {
+            path.points = null;
+            while (path.transform.childCount > 0)
+            {
+                DestroyImmediate(path.transform.GetChild(0).gameObject);
+            }
+            Debug.Log("Path Cleared!");
+        }
+
+        // Add a button to reverse the path
+        if (GUILayout.Button("Reverse Path"))
+        {
+            // Reverse the child objects
+            int childCount = path.transform.childCount;
+            for (int i = 0; i < childCount / 2; i++)
+            {
+                Transform first = path.transform.GetChild(i);
+                Transform second = path.transform.GetChild(childCount - 1 - i);
+                Vector3 tempPosition = first.position;
+                first.position = second.position;
+                second.position = tempPosition;
+            }
+            Debug.Log("Path Reversed!");
+        }
+    }
+}
 
 public class Path : MonoBehaviour
 {
-    // Number of points in the path
-    public int numPoints;
-
-    // Number of sides in the polygon
-    public int polygonSides;
-    // Radius of the path
-    public float polygonRadius;
-    public float startAngle = 0;
-    public bool clockWise = false;
+    [Serializable]
+    public class polygon
+    {
+        public int sides;
+        public float radius;
+        public float startAngle;
+        public bool clockWise;
+    }
+    public polygon basePolygon;
     public bool looped = true;
     public Vector3[] points;
     public bool hideSprite = true;
@@ -23,17 +69,15 @@ public class Path : MonoBehaviour
     void Start()
     {
         // If the path is empty, create it
-        if (transform.childCount == 0 && numPoints == 0)
+        if (transform.childCount == 0 && (points == null || points.Length == 0))
         {
             createPath();
         }
-        else if (numPoints == 0)
+        else if (points == null || points.Length == 0)
         {
-            // Get the number of points
-            numPoints = transform.childCount;
             // Get the points
-            points = new Vector3[numPoints];
-            for (int i = 0; i < numPoints; i++)
+            points = new Vector3[transform.childCount];
+            for (int i = 0; i < points.Length; i++)
             {
                 points[i] = transform.GetChild(i).gameObject.transform.position;
             }
@@ -63,20 +107,19 @@ public class Path : MonoBehaviour
 
     public void createPath()
     {   
-        if (polygonSides ==  0) return;
+        if (basePolygon.sides ==  0) return;
         
-        float sign = clockWise ? -1 : 1;
+        float sign = basePolygon.clockWise ? -1 : 1;
         // Create a new path with the given number of points
-        numPoints = polygonSides;
-        points = new Vector3[numPoints];
+        points = new Vector3[basePolygon.sides];
         // Create the path based on the number of points and radius
-        for (int i = 0; i < numPoints; i++)
+        for (int i = 0; i < points.Length; i++)
         {
             // Calculate the angle of the point
-            float angle = startAngle + 2 * Mathf.PI * i / numPoints * sign;
+            float angle = basePolygon.startAngle + 2 * Mathf.PI * i / points.Length * sign;
 
             // Calculate the position of the point
-            Vector3 position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * polygonRadius;
+            Vector3 position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * basePolygon.radius;
 
             // Create the point
             GameObject point = new GameObject("Point " + i);
@@ -93,7 +136,7 @@ public class Path : MonoBehaviour
         // If a max param check is not provided, check all points
         if (maxParamCheck == 0)
         {
-            maxParamCheck = numPoints - 1;
+            maxParamCheck = points.Length - 1;
         }
 
         // Find the closest point on the path to the given position
@@ -105,8 +148,8 @@ public class Path : MonoBehaviour
         for (int i = currentPos; i < currentPos + maxParamCheck; i++)
         {
             // Wrap the index around
-            int startIndex = i % numPoints;
-            int endIndex = (i + 1) % numPoints;
+            int startIndex = i % points.Length;
+            int endIndex = (i + 1) % points.Length;
         
             // Get the start and end points of the segment
             Vector3 start = points[startIndex];
@@ -154,18 +197,18 @@ public class Path : MonoBehaviour
                 return points[0];
             }
             // If the param is greater than the number of points, return the last point
-            if (param > numPoints - 1)
+            if (param > points.Length - 1)
             {
-                return points[numPoints - 1];
+                return points[points.Length - 1];
             }
         }
 
-        // Loop the param to stay in the range [0, numPoints)
-        param = Mathf.Repeat(param, numPoints);
+        // Loop the param to stay in the range [0, points.Length)
+        param = Mathf.Repeat(param, points.Length);
 
         // Regular case
         int startIndex = (int)param;
-        int endIndex = (startIndex + 1) % numPoints;
+        int endIndex = (startIndex + 1) % points.Length;
 
         // Get the start and end points of the segment
         Vector3 start = points[startIndex];
@@ -180,17 +223,6 @@ public class Path : MonoBehaviour
         // Calculate the point on the segment
         float localParam = param - startIndex;
         return Vector3.Lerp(start, end, localParam);
-    }
-
-    public void reversePath()
-    {
-        // Reverse the order of the points
-        for (int i = 0; i < numPoints / 2; i++)
-        {
-            Vector3 temp = points[i];
-            points[i] = points[numPoints - i - 1];
-            points[numPoints - i - 1] = temp;
-        }
     }
 
     public void OnDrawGizmos()
@@ -216,7 +248,7 @@ public class Path : MonoBehaviour
             Gizmos.DrawSphere(start, 0.1f);
 
             // Add a sphere at the end of the path
-            if (i == numPoints - 2)
+            if (i == transform.childCount - 2)
             {
                 Gizmos.DrawSphere(end, 0.1f);
             }
@@ -233,7 +265,7 @@ public class Path : MonoBehaviour
 
     public void DrawPath()
     {
-        for (int i = 0; i < numPoints - 1; i++)
+        for (int i = 0; i < points.Length - 1; i++)
         {
             Vector3 start = points[i];
             Vector3 end = points[i + 1];
@@ -242,7 +274,7 @@ public class Path : MonoBehaviour
         // Draw the last segment
         if (looped)
         {
-            Vector3 start = points[numPoints - 1];
+            Vector3 start = points[points.Length - 1];
             Vector3 end = points[0];
             Debug.DrawLine(start, end, Color.gray);
         }
