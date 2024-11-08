@@ -69,7 +69,7 @@ public class Path : MonoBehaviour
     void Start()
     {
         // If the path is empty, create it
-        if (transform.childCount == 0 && (points == null || points.Length == 0))
+        if (transform.childCount == 0 && (points == null || points.Length == 0) && basePolygon != null)
         {
             createPath();
         }
@@ -265,6 +265,10 @@ public class Path : MonoBehaviour
 
     public void DrawPath()
     {
+        if (points == null || points.Length == 0)
+        {
+            return;
+        }
         for (int i = 0; i < points.Length - 1; i++)
         {
             Vector3 start = points[i];
