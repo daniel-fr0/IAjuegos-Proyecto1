@@ -6,6 +6,7 @@ public class PlayerController: MonoBehaviour
 	private InputSystem_Actions controls;
 	private Animator animator;
 	private DynamicController dController;
+	public bool clickMove = false;
 	public float inputRadius = 2f;
 	private bool isMoving = false;
 
@@ -15,8 +16,12 @@ public class PlayerController: MonoBehaviour
 
 		controls = new InputSystem_Actions();
 		controls.Player.Attack.performed += ctx => Attack();
-		controls.Player.ClickMove.performed += ClickMove;
-		controls.Player.ClickMove.canceled += ClickMoveRelease;
+
+		if (clickMove)
+		{
+			controls.Player.ClickMove.performed += ClickMove;
+			controls.Player.ClickMove.canceled += ClickMoveRelease;
+		}
 	}
 
 	void OnEnable()
