@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
         // Go to next scene with E key or R1
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton5))
         {
+            if (scenes.Length == 0) return;
             scenes[scene].SetActive(false);
             scene = (scene + 1) % scenes.Length;
             scenes[scene].SetActive(true);
@@ -36,6 +37,7 @@ public class GameController : MonoBehaviour
         // Go to previous scene with Q key or L1
         if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.JoystickButton4))
         {
+            if (scenes.Length == 0) return;
             scenes[scene].SetActive(false);
             scene = (scene - 1 + scenes.Length) % scenes.Length;
             scenes[scene].SetActive(true);
