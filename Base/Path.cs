@@ -81,6 +81,12 @@ public class Path : MonoBehaviour
             {
                 points[i] = transform.GetChild(i).gameObject.transform.position;
             }
+
+            // Destroy the child objects
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         // Hide the sprite renderer if specified
