@@ -19,7 +19,7 @@ public class Kinematic : MonoBehaviour
 	// Constraints like freeze position or rotation
 	public bool freezePosition = false;
 	public bool freezeRotation = false;
-	public bool fixSpeed = false;
+	public bool freezeSpeed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +41,7 @@ public class Kinematic : MonoBehaviour
 		if (!freezeRotation) transform.rotation = Quaternion.Euler(0, 0, orientation);
 
 		// Record speed (For Debugging)
-		if (!fixSpeed) speed = velocity.magnitude;
+		if (!freezeSpeed) speed = velocity.magnitude;
 		else speed = 0;
 
 		// Toggle info with F key OR triangle button
