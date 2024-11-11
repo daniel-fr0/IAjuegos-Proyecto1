@@ -3,15 +3,24 @@ using UnityEngine;
 public class DropItem : MonoBehaviour
 {
     public GameObject item;
-    public bool dropped = false;
     private Kinematic kinematicData;
 
     private InputSystem_Actions controls;
     void Awake()
     {
         controls = new InputSystem_Actions();
-        controls.Player.Drop.performed += ctx => dropped = true;
-        controls.Player.Crouch.performed += ctx => dropped = true;
+        controls.Player.Drop.performed += ctx => item.SetActive(true);
+        controls.Player.Crouch.performed += ctx => item.SetActive(true);
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,11 +29,6 @@ public class DropItem : MonoBehaviour
         if (item == null)
         {
             Debug.LogWarning("Item not found in DropItem " + gameObject.name);
-        }
-
-        if (dropped)
-        {
-            item.SetActive(true);
         }
         else
         {
@@ -46,12 +50,6 @@ public class DropItem : MonoBehaviour
         {
             kinematicData.position = transform.position;
             item.transform.position = kinematicData.position;
-        }
-
-        if (dropped && item.activeSelf == false)
-        {
-            item.SetActive(true);
-            dropped = false;
         }
     }
 }
