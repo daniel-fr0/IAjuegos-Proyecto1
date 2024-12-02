@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerController: MonoBehaviour
 {
 	private InputSystem_Actions controls;
-	private Animator animator;
+	public Animator animator;
 	private DynamicController dController;
 	public bool clickMove = false;
 	public float inputRadius = 2f;
@@ -12,8 +12,6 @@ public class PlayerController: MonoBehaviour
 
 	void Awake()
 	{	
-		animator = GetComponent<Animator>();
-
 		controls = new InputSystem_Actions();
 		controls.Player.Attack.performed += ctx => Attack();
 
