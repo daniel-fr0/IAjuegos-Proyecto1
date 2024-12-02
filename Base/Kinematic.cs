@@ -134,6 +134,25 @@ public class Kinematic : MonoBehaviour
 		}
 	}
 
+	public void CopyFrom(Kinematic other)
+	{
+		position = other.position;
+		orientation = other.orientation;
+		velocity = other.velocity;
+		rotation = other.rotation;
+		speed = other.speed;
+		debugInfo = other.debugInfo;
+		rotationDebugRadius = other.rotationDebugRadius;
+		usingAligner = other.usingAligner;
+		accelerationDebugScale = other.accelerationDebugScale;
+		separationSteering = other.separationSteering;
+		freezePosition = other.freezePosition;
+		freezeRotation = other.freezeRotation;
+		freezeSpeed = other.freezeSpeed;
+		avoidCollisions = other.avoidCollisions;
+		avoidCollisionsSettings = other.avoidCollisionsSettings;
+	}
+
 	public void NewOrientation()
 	{
 		// Do not update orientation if object is using an align behavior
