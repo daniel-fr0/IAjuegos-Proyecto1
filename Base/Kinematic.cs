@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Kinematic : MonoBehaviour
 {
@@ -17,6 +18,19 @@ public class Kinematic : MonoBehaviour
 	public bool freezePosition = false;
 	public bool freezeRotation = false;
 	public bool freezeSpeed = false;
+	public bool avoidCollisions = false;
+	[Serializable]
+	public class AvoidCollisionsSettings
+	{
+		public float avoidDistance = 0.5f;
+		public float lookAhead = 0.25f;
+		public float avoidForce = 100.0f;
+		[HideInInspector]
+		public SteeringOutput steering = new SteeringOutput();
+		[HideInInspector]
+		public bool collisionDetected = false;
+	}
+	public AvoidCollisionsSettings avoidCollisionsSettings = new AvoidCollisionsSettings();
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +43,8 @@ public class Kinematic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (avoidCollisions) DetectCollisions();
+
         // Update kinematic properties
 		position += velocity * Time.deltaTime;
 		orientation += rotation * Time.deltaTime;
@@ -60,6 +76,12 @@ public class Kinematic : MonoBehaviour
 
 	public void ApplySteering(SteeringOutput steering, float maxSpeed = float.MaxValue, float maxRotation = float.MaxValue)
 	{
+		// If there is a collision, use the collision avoidance steering
+		if (avoidCollisions && avoidCollisionsSettings.collisionDetected)
+		{
+			steering = avoidCollisionsSettings.steering;
+		}
+
 		// Add extra steering when using separation
 		steering.linear += separationSteering.linear;
 		separationSteering = new SteeringOutput();
@@ -82,6 +104,33 @@ public class Kinematic : MonoBehaviour
 		if (debugInfo)
 		{
 			Debug.DrawRay(position, steering.linear * accelerationDebugScale, Color.red);
+		}
+	}
+
+	private void DetectCollisions()
+	{
+		// Check for collisions
+		RaycastHit2D hit = Physics2D.Raycast(position, velocity.normalized, avoidCollisionsSettings.lookAhead);
+
+		// If a collision is detected, avoid it
+		if (hit.collider != null)
+		{
+			// Calculate "seek" target position, the idea is to "delegate" the steering to the Seeker behaviour
+			Vector3 targetPosition = hit.point + hit.normal * avoidCollisionsSettings.avoidDistance;
+
+			// Seeker behaviour is to calculate the steering output based on the target position
+			avoidCollisionsSettings.steering.linear = targetPosition - position;
+
+			// Steer towards the target at current speed
+			avoidCollisionsSettings.steering.linear.Normalize();
+			avoidCollisionsSettings.steering.linear *= avoidCollisionsSettings.avoidForce;
+
+			avoidCollisionsSettings.collisionDetected = true;
+			ApplySteering(avoidCollisionsSettings.steering);
+		}
+		else
+		{
+			avoidCollisionsSettings.collisionDetected = false;
 		}
 	}
 
