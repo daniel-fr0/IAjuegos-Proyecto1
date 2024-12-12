@@ -5,6 +5,7 @@ public class DynamicController : MonoBehaviour
     private Kinematic character;
     public float maxSpeed = 5.0f;
     public float maxAcceleration = 20.0f;
+    public float sprintMultiplier = 2.0f;
     private float speed;
     private float acceleration;
     private SteeringOutput steering;
@@ -35,8 +36,8 @@ public class DynamicController : MonoBehaviour
     {
         if (sprint > 0)
         {
-            speed = maxSpeed * 2;
-            acceleration = maxAcceleration * 2;
+            speed = maxSpeed * sprintMultiplier;
+            acceleration = maxAcceleration * sprintMultiplier;
         }
         else
         {
