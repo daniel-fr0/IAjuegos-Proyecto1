@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -6,6 +7,13 @@ public class GameController : MonoBehaviour
     public GameObject[] scenes;
     public GameObject[] toggleShow;
     public Seeker[] toggleFlee;
+    
+    // Pause system variables
+    private bool isPaused = false;
+    private GUIStyle buttonStyle;
+    private GUIStyle labelStyle;
+    public int buttonFontSize = 20;
+    public int labelFontSize = 30;
 
     // Start is called before the first frame update
     void Start()
@@ -72,7 +80,105 @@ public class GameController : MonoBehaviour
         // Esc or start button to toggle pause
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton9))
         {
-            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+            TogglePause();
         }
+    }
+
+    void OnGUI()
+    {
+        // Only show pause menu if the game is paused
+        if (isPaused)
+        {
+            // Initialize styles if they haven't been created yet
+            if (buttonStyle == null)
+            {
+                buttonStyle = new GUIStyle(GUI.skin.button);
+                buttonStyle.fontSize = buttonFontSize;
+                buttonStyle.normal.textColor = Color.black;
+                buttonStyle.hover.textColor = Color.gray;
+            }
+
+            if (labelStyle == null)
+            {
+                labelStyle = new GUIStyle(GUI.skin.label);
+                labelStyle.fontSize = labelFontSize;
+                labelStyle.normal.textColor = Color.white;
+                labelStyle.alignment = TextAnchor.MiddleCenter;
+            }
+
+            // Semi-transparent black background
+            GUI.color = new Color(0, 0, 0, 0.8f);
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
+            GUI.color = Color.white;
+
+            // Pause menu title
+            GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 50), "PAUSADO", labelStyle);
+
+            // Resume button
+            if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 50, 150, 40), "Resumir", buttonStyle))
+            {
+                ResumeGame();
+            }
+
+            // Restart button
+            if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2, 150, 40), "Reiniciar", buttonStyle))
+            {
+                RestartGame();
+            }
+
+            // Quit button
+            if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 + 50, 150, 40), "Salir", buttonStyle))
+            {
+                QuitGame();
+            }
+
+            // Additional instruction text
+            GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height / 2 + 55, 300, 30), "ESC para resumir", labelStyle);
+        }
+    }
+
+    private void TogglePause()
+    {
+        if (isPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+    }
+
+    private void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0;
+    }
+
+    private void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1;
+    }
+
+    private void RestartGame()
+	{
+		// Reset time scale to normal
+		Time.timeScale = 1;
+		
+		// Reload the current scene
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
+    private void QuitGame()
+    {
+        // Reset time scale before quitting
+        Time.timeScale = 1;
+        
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }
