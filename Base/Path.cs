@@ -1,52 +1,5 @@
 using UnityEngine;
-using UnityEditor;
 using System;
-
-[CustomEditor(typeof(Path))]
-public class PathEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        Path path = (Path)target;
-
-        // Draw the default inspector
-        DrawDefaultInspector();
-
-        // Add a button to create the path
-        if (GUILayout.Button("Create Path"))
-        {
-            path.createPath();
-            Debug.Log("Path Created!");
-        }
-
-        // Add a button to clear the path
-        if (GUILayout.Button("Clear Path"))
-        {
-            path.points = null;
-            while (path.transform.childCount > 0)
-            {
-                DestroyImmediate(path.transform.GetChild(0).gameObject);
-            }
-            Debug.Log("Path Cleared!");
-        }
-
-        // Add a button to reverse the path
-        if (GUILayout.Button("Reverse Path"))
-        {
-            // Reverse the child objects
-            int childCount = path.transform.childCount;
-            for (int i = 0; i < childCount / 2; i++)
-            {
-                Transform first = path.transform.GetChild(i);
-                Transform second = path.transform.GetChild(childCount - 1 - i);
-                Vector3 tempPosition = first.position;
-                first.position = second.position;
-                second.position = tempPosition;
-            }
-            Debug.Log("Path Reversed!");
-        }
-    }
-}
 
 public class Path : MonoBehaviour
 {
