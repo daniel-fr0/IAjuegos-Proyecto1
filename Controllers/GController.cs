@@ -131,9 +131,6 @@ public class GameController : MonoBehaviour
             {
                 QuitGame();
             }
-
-            // Additional instruction text
-            GUI.Label(new Rect(Screen.width / 2 - 150, Screen.height / 2 + 55, 300, 30), "ESC para resumir", labelStyle);
         }
     }
 
